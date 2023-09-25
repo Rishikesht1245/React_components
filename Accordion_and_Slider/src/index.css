@@ -1,0 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+  background: rgb(45, 43, 43);
+  color: white;
+}

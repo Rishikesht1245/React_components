@@ -1,0 +1,119 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.heading {
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 75px;
+}
+
+section {
+  border: 2px solid gray;
+  width: 60%;
+  margin: auto;
+  margin-top: 3rem;
+  text-align: left;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  section {
+    width: 100%;
+    padding: 0.8rem;
+  }
+  .heading {
+    font-size: 24px;
+  }
+}
+
+.faq-container {
+  border: 1px solid gray;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.question-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icons {
+  font-size: 32px;
+  font-weight: bolder;
+  margin-right: 20px;
+  padding: 0px 3px;
+  border: none;
+  outline: none;
+}
+
+.question {
+  font-size: 20px;
+  padding: 10px;
+}
+
+.answer {
+  font-size: 16px;
+  padding: 10px;
+}
+
+.slider {
+  width: 60vw;
+  height: 90vh;
+  padding: 5%;
+  border: 1px solid gray;
+  margin: auto;
+  position: relative;
+}
+
+.image {
+  object-fit: contain;
+  width: 100%;
+  height: 70vh;
+  margin: auto;
+}
+
+.indicators {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.indicator {
+  border: 6px solid white;
+  border-radius: 50%;
+}
+
+.btn {
+  position: absolute;
+  border: none;
+  font-size: 30px;
+  margin: 0 20px;
+  font-weight: bolder;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
+}
+
+.active {
+  border: 6px solid green;
+}
