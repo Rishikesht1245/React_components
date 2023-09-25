@@ -79,6 +79,7 @@ function App() {
 
   const handleBlur = (event) => {
     const { name, value } = event.target;
+    console.log(name, value);
     let err = false;
 
     if ((name === "name" && value === "") || value.length < 3) {
@@ -117,6 +118,7 @@ function App() {
       updatedSkills = updatedSkills.filter((item) => item !== value);
     }
     setFormFields((prev) => ({ ...prev, [name]: updatedSkills }));
+    handleBlur(event);
   };
 
   return (

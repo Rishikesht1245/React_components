@@ -14,7 +14,7 @@ const SelectInput = ({
         <span className="danger">*</span> :
       </label>
 
-      <select onChange={handleChange} onBlur={handleBlur}>
+      <select onChange={handleChange} onBlur={handleBlur} name={name}>
         <option className="options">-- Select Your Country --</option>
         {options.map((option, index) => {
           return (
