@@ -1,0 +1,19 @@
+/* globally applied styles are written here */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(45deg, rgb(193, 62, 14), rgb(163, 25, 163));
+  min-height: 100vh;
+  color: rgb(44, 44, 44);
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
