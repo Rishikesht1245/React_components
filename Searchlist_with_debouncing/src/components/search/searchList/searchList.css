@@ -1,0 +1,25 @@
+.search-list-container {
+  width: 100%;
+  margin-top: 10px;
+  overflow-y: auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+.search-list-container .search-list-item {
+  background-color: rgb(15, 31, 31);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.search-list-item .title {
+  color: white;
+  word-break: break-all;
+}
+
+.search-list-item:hover {
+  opacity: 0.7;
+}
