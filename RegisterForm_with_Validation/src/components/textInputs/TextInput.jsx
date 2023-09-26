@@ -7,6 +7,7 @@ const TextInput = ({
   handleChange,
   error,
   handleBlur,
+  formFields,
 }) => {
   return (
     <div className="input-group">
@@ -21,6 +22,7 @@ const TextInput = ({
         placeholder={placeholder}
         onChange={handleChange}
         onBlur={handleBlur}
+        value={formFields[name]}
       />
       {/* dynamic fetching of value from error object */}
       {error[name] && (

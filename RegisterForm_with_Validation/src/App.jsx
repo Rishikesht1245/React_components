@@ -131,6 +131,7 @@ function App() {
             name="name"
             type={"text"}
             text={"Name"}
+            formFields={formFields}
             placeholder="Enter Your Name"
             handleChange={handleChange}
             error={error}
@@ -144,6 +145,7 @@ function App() {
             handleChange={handleChange}
             error={error}
             handleBlur={handleBlur}
+            formFields={formFields}
           />
           <TextInput
             name="dob"
@@ -153,6 +155,7 @@ function App() {
             handleChange={handleChange}
             error={error}
             handleBlur={handleBlur}
+            formFields={formFields}
           />
 
           <SelectInput
