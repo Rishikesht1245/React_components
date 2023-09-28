@@ -1,0 +1,36 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+
+  color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 100px;
+  align-items: center;
+  height: 100vh;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  padding: 10px;
+  background-color: red;
+  margin: 20px;
+}
+
+.para,
+.input {
+  color: black;
+  padding: 7px;
+}
+
+.black {
+  background-color: black;
+  color: white;
+}

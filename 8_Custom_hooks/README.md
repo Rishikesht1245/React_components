@@ -1,8 +1,9 @@
-# React + Vite
+# Custom hooks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The purpose of this project was to implement some custom hooks
 
-Currently, two official plugins are available:
+Result
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Implemented useToggleHook to toggle between light and dark theme.
+- Implemented useDirection to identify the direction of the HTML Page.
+- Implemented useLocalStorage to set Items and get Items from Local Storage.
