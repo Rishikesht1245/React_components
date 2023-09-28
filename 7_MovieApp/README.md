@@ -1,8 +1,8 @@
-# React + Vite
+# Movie APP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Movie App build using ReactJS and with the help of TMDB API for Movie Fetching.
 
-Currently, two official plugins are available:
+***https://movieapp1245.netlify.app/***
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Login Functionality is implemented : Please use "test" as the credentials for login (both email and password).
+- Logout and Movies Search functionality is also implemented with Debouncing
