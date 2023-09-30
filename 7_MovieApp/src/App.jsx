@@ -1,19 +1,21 @@
-import { useContext, useEffect, useState } from "react";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
-import { AuthContext } from "./context/AuthContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ProtectedRoutes } from "./routes/ProtectedRoutes";
+import { SignupPage } from "./pages/SignupPage";
 
 function App() {
-  const { auth, dispatch } = useContext(AuthContext);
-  const [authorized, setAuthorized] = useState(false);
-
-  useEffect(() => {
-    const storedAuth = JSON.parse(localStorage.getItem("auth")) || false;
-    if (storedAuth) dispatch({ type: "login" });
-    setAuthorized(storedAuth || auth);
-  }, [auth]);
-
-  return !authorized ? <LoginPage /> : <HomePage />;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" exact element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/home" element={<HomePage />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

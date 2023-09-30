@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Button } from "./subcomponents/Button";
 import { Input } from "./subcomponents/input";
 import { AuthContext } from "../context/AuthContext";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const Form = () => {
   const [form, setForm] = useState({
@@ -19,6 +20,12 @@ export const Form = () => {
   //accessing store
   const { auth, dispatch } = useContext(AuthContext);
 
+  const location = useLocation();
+  console.log(location.pathname);
+
+  // navigation
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     const { value, name } = event.target;
     if (value) setError((prev) => ({ ...prev, [name]: false }));
@@ -34,7 +41,9 @@ export const Form = () => {
 
     if (email === "test" && password === "test") {
       setValidationError(false);
-      return dispatch({ type: "login" });
+      dispatch({ type: "login" });
+      window.history.replaceState(null, "", "/dashboard");
+      return navigate("/home");
     }
     setValidationError(true);
   };
@@ -73,18 +82,29 @@ export const Form = () => {
           text={"Sign In"}
           className={"bg-red-600 p-2 hover:bg-red-500"}
         />
-        <a
-          href="/"
-          className="text-right text-[12px] mt-[-20px] text-gray-400 px-1 hover:text-white"
-        >
-          Forgot Password ?
-        </a>
-        <p className="text-center text-[12px] text-gray-400 px-1">
-          New to MovieApp?{" "}
-          <a href="/" className="hover:text-white">
-            Sign up now
-          </a>
-        </p>
+        {location.pathname !== "/signup" ? (
+          <>
+            <a
+              href="/"
+              className="text-right text-[12px] mt-[-20px] text-gray-400 px-1 hover:text-white"
+            >
+              Forgot Password ?
+            </a>
+            <p className="text-center text-[12px] text-gray-400 px-1">
+              New to MovieApp?{" "}
+              <Link to="/signup" className="hover:text-white">
+                Sign up now
+              </Link>
+            </p>
+          </>
+        ) : (
+          <p className="text-center text-[12px] text-gray-400 px-1">
+            Already registered ?{" "}
+            <Link to="/" className="hover:text-white">
+              Login Now
+            </Link>
+          </p>
+        )}
       </form>
     </div>
   );
