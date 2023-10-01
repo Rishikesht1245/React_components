@@ -8,6 +8,9 @@ const MemoChild = ({ count }) => {
 
   const counter = useMemo(() => print(), []);
 
+  //   In useCallback the counter will be a function
+  //   const counter = useCallback(() => print(), []);
+
   return (
     <div className="flex flex-col ">
       <h1>This is the Memo Child </h1>
