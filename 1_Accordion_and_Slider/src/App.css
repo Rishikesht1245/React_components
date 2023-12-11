@@ -117,3 +117,46 @@ section {
 .active {
   border: 6px solid green;
 }
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.card-bg {
+  background-color: #f4eeee;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 200px;
+  width: full;
+}
+
+.card-bg > p {
+  color: rgb(10, 10, 10);
+  font-weight: bolder;
+  background: #fff;
+}
+
+/* Add this to your styles or in a separate CSS file */
+.slick-prev,
+.slick-next {
+  font-size: 74px; /* Adjust the font size as needed */
+  color: #eee8e8; /* Adjust the color as needed */
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  color: #333; /* Adjust the hover color as needed */
+}
