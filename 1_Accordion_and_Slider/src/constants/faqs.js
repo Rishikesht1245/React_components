@@ -50,3 +50,35 @@ const faqs = [
 ];
 
 export default faqs;
+export const cards = [
+  {
+    id: 1,
+    title: "Jewellery",
+    icon: "fa-solid fa-gem text-[80px] text-center text-blue-700",
+  },
+  {
+    id: 2,
+    title: "Real Estate",
+    icon: "fa-solid fa-building-flag text-[80px] text-center text-blue-700",
+  },
+  {
+    id: 3,
+    title: "Sports",
+    icon: "fa-solid fa-volleyball text-[80px] text-center text-blue-700",
+  },
+  {
+    id: 4,
+    title: "Vehicle",
+    icon: "fa-solid fa-car-side text-[80px] text-center text-blue-700",
+  },
+  {
+    id: 5,
+    title: "Music",
+    icon: "fa-solid fa-music text-[80px] text-center text-blue-700",
+  },
+  {
+    id: 6,
+    title: "Clothes",
+    icon: "fa-solid fa-shirt text-[80px] text-center text-blue-700",
+  },
+];

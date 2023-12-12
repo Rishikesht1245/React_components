@@ -136,7 +136,7 @@ section {
   background-color: #f4eeee;
   padding: 20px;
   border-radius: 5px;
-  max-width: 200px;
+  max-width: 150px;
   width: full;
 }
 
@@ -146,11 +146,9 @@ section {
   background: #fff;
 }
 
-/* Add this to your styles or in a separate CSS file */
 .slick-prev,
 .slick-next {
-  font-size: 74px; /* Adjust the font size as needed */
-  color: #eee8e8; /* Adjust the color as needed */
+  color: blue; /* Set the color to blue */
   background: transparent;
   border: none;
   outline: none;
@@ -158,5 +156,5 @@ section {
 
 .slick-prev:hover,
 .slick-next:hover {
-  color: #333; /* Adjust the hover color as needed */
+  color: darkblue; /* Adjust the hover color as needed */
 }

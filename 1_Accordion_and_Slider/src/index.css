@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -5,4 +9,17 @@
   font-family: "Courier New", Courier, monospace;
   background: rgb(45, 43, 43);
   color: white;
+}
+
+.slick-prev,
+.slick-next {
+  color: blue; /* Set the color to blue */
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  color: darkblue; /* Adjust the hover color as needed */
 }

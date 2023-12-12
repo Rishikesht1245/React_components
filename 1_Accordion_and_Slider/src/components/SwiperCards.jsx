@@ -3,13 +3,35 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { cards } from "../constants/faqs";
 const SwipingCard = () => {
   //Documentation here : https://react-slick.neostack.com/docs/example/auto-play
+
+  // const arrowStyles = {
+  //   color: "blue", // Change this to the desired color
+  //   fontSize: "24px", // Adjust the font size as needed
+  //   background: "transparent",
+  //   border: "none",
+  //   outline: "none",
+  // };
+  // const NextArrow = ({ onClick, styles }) => (
+  //   <button className="slick-next" onClick={onClick} style={styles}>
+  //     <i className="fa-solid fa-arrow-right"></i>
+  //   </button>
+  // );
+
+  // const PrevArrow = ({ onClick, styles }) => (
+  //   <button className="slick-prev" onClick={onClick} style={styles}>
+  //     <i className="fa-solid fa-arrow-left"></i>
+  //   </button>
+  // );
   const settings = {
-    arrows: false,
-    slidesToShow: 3,
+    arrows: true,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
+    // nextArrow: <NextArrow styles={arrowStyles} />,
+    // prevArrow: <PrevArrow styles={arrowStyles} />,
     speed: 2000,
     autoplaySpeed: 2000,
     cssEase: "linear",
@@ -38,30 +60,20 @@ const SwipingCard = () => {
   return (
     <Slider
       {...settings}
-      style={{ maxWidth: "968px", margin: "auto", width: "100%" }}
+      style={{ maxWidth: "1460px", margin: "auto", width: "100%" }}
     >
       {/* Your card components go here */}
-      <div className="flex-col card-bg">
-        <i class="fa-solid fa-house"></i>
-        <p className="p-4 m-2">Card 1</p>
-      </div>
-      <div className="flex-col card-bg">
-        <i class="fa-solid fa-house"></i>
-        <p className="p-4 m-2">Card 2</p>
-      </div>
-      <div className="flex-col card-bg">
-        <i class="fa-thin fa-house"></i>
-        <p className="p-4 m-2">Card 3</p>
-      </div>
-      <div className="flex-col card-bg">
-        <i class="fa-thin fa-house"></i>
-        <p className="p-4 m-2">Card 4</p>
-      </div>
-      <div className="flex-col card-bg">
-        <i class="fa-thin fa-house"></i>
-        <p className="p-4 m-2">Card 5</p>
-      </div>
-      {/* Add more cards as needed */}
+      {cards?.map((card) => (
+        <div
+          className="flex flex-col bg-white max-w-[200px] w-full p-3 rounded-lg"
+          key={card?.id}
+        >
+          <i className={`${card?.icon} bg-white`}></i>
+          <p className="m-2 bg-white text-black text-lg font-semibold">
+            {card?.title}
+          </p>
+        </div>
+      ))}
     </Slider>
   );
 };
