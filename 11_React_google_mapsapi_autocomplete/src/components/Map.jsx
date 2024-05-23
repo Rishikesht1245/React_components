@@ -1,5 +1,5 @@
-import React from "react";
-import { GoogleMap } from "@react-google-maps/api";
+import React, { useState } from "react";
+import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
@@ -11,8 +11,9 @@ const center = {
   lng: 78.523,
 };
 
-function Map({ isLoaded }) {
+function Map({ isLoaded, coordinatesArr }) {
   const [map, setMap] = React.useState(null);
+  const [infoWindowOpen, setInfoWindowOpen] = useState(-1);
 
   const onLoad = React.useCallback(function callback(map) {
     setMap(map);
@@ -22,6 +23,14 @@ function Map({ isLoaded }) {
     setMap(null);
   }, []);
 
+  const handleMarkerClick = (index) => {
+    setInfoWindowOpen(index);
+  };
+
+  const handleInfoWindowClose = () => {
+    setInfoWindowOpen(-1);
+  };
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -30,8 +39,24 @@ function Map({ isLoaded }) {
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
+      {coordinatesArr?.map((coordinate, index) => (
+        <Marker
+          position={{ lat: coordinate?.lat, lng: coordinate?.lng }}
+          onClick={handleMarkerClick}
+        >
+          <InfoWindow position={{ lat: coordinate?.lat, lng: coordinate?.lng }}>
+            {infoWindowOpen === index && (
+              <InfoWindow onCloseClick={handleInfoWindowClose}>
+                <div>
+                  <h4>{coordinate?.location}</h4>
+                  <p>Lat: {coordinate.lat}</p>
+                  <p>Lng: {coordinate.lng}</p>
+                </div>
+              </InfoWindow>
+            )}
+          </InfoWindow>
+        </Marker>
+      ))}
     </GoogleMap>
   ) : (
     <></>
