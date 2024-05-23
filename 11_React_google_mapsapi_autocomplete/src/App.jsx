@@ -44,6 +44,11 @@ function App() {
     setLocation(e?.target?.value);
   };
 
+  const handleCoordinatesChange = (e) => {
+    const splitValues = e?.target.value?.split(",");
+    setCoordinates({ lat: splitValues[0], lng: splitValues[1] });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setCoordinatesArr((prev) => [...prev, { ...coordinates, location }]);
@@ -59,10 +64,7 @@ function App() {
       {isLoaded ? (
         <div className="flex flex-col gap-6 border border-gray-600 shadow-lg rounded-sm justify-center items-center h-[90vh] max-w-[800px] lg:max-w-[1024px] w-full mx-auto p-5">
           {/* Inputs for coordinates and location */}
-          <form
-            className="flex flex-row items-center w-full justify-between gap-10"
-            onSubmit={handleSubmit}
-          >
+          <div className="flex flex-row items-center w-full justify-between gap-10">
             <div className="flex flex-col flex-1 items-start gap-1 w-full">
               <label
                 htmlFor="coordinates"
@@ -77,6 +79,7 @@ function App() {
                 className="px-4 py-2 border focus:outline-none rounded-sm shadow-sm w-full"
                 placeholder="latitude, longitude"
                 name="coordinates"
+                onChange={handleCoordinatesChange}
                 value={
                   coordinates?.lat && coordinates?.lng
                     ? `${coordinates.lat}, ${coordinates.lng}`
@@ -109,12 +112,12 @@ function App() {
               )}
             </div>
             <button
-              type="submit"
+              onClick={handleSubmit}
               className="bg-red-600 text-white p-2 px-4 rounded-md mt-7"
             >
               Add Marker
             </button>
-          </form>
+          </div>
 
           {/* Map component comes here */}
 
