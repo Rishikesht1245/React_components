@@ -1,17 +1,24 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Map from "./components/Map";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { fromLatLng } from "react-geocode";
+
+const libraries = ["places", "geocoding"];
 
 function App() {
   const locationRef = useRef();
+  //for marker in map
   const [coordinates, setCoordinates] = useState({ lat: "", lng: "" });
+  // for input field in form
+  const [coordinateStr, setCoordinateStr] = useState("");
+  // for tracking all markers
   const [coordinatesArr, setCoordinatesArr] = useState([]);
   const [location, setLocation] = useState("");
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ["places", "geocoding"],
+    libraries: libraries,
   });
 
   const onLoad = (autocomplete) => {
@@ -26,27 +33,44 @@ function App() {
       }
       const loc = place.geometry?.location;
       if (location) {
+        const lat = loc?.lat();
+        const lng = loc?.lng();
         setCoordinates({
-          lat: loc.lat(),
-          lng: loc.lng(),
+          lat,
+          lng,
         });
+        setCoordinateStr(`${lat}, ${lng}`);
       }
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
   };
 
-  if (loadError) {
-    return <div>Error loading Google Maps API</div>;
-  }
+  // fetch location from coordinates using geocode
+  const fetchLocationData = useCallback(async (lat, lng) => {
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    try {
+      const response = await fromLatLng(lat, lng, apiKey);
+      const formattedAddress = response.results[0].formatted_address;
+      setLocation(formattedAddress);
+    } catch (error) {
+      console.error("Error fetching location:", error);
+    }
+  }, []);
 
   const handleLocationChange = (e) => {
     setLocation(e?.target?.value);
   };
 
   const handleCoordinatesChange = (e) => {
-    const splitValues = e?.target.value?.split(",");
-    setCoordinates({ lat: splitValues[0], lng: splitValues[1] });
+    const [lat, lng] = e?.target.value?.split(",");
+    // for displaying in input
+    setCoordinateStr(e?.target?.value);
+    // for providing to map
+    setCoordinates({ lat: parseFloat(lat), lng: parseFloat(lng) });
+    if (coordinates?.lat && coordinates?.lng) {
+      fetchLocationData(coordinates?.lat, coordinates?.lng);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -54,7 +78,14 @@ function App() {
     setCoordinatesArr((prev) => [...prev, { ...coordinates, location }]);
     setLocation("");
     setCoordinates(null);
+    setCoordinateStr("");
   };
+
+  console.log(coordinatesArr);
+
+  if (loadError) {
+    return <div>Error loading Google Maps API</div>;
+  }
 
   return (
     <main className="bg-[#0e1123] py-4 min-h-[100vh]">
@@ -78,13 +109,8 @@ function App() {
                 type="text"
                 className="px-4 py-2 border focus:outline-none rounded-sm shadow-sm w-full"
                 placeholder="latitude, longitude"
-                name="coordinates"
                 onChange={handleCoordinatesChange}
-                value={
-                  coordinates?.lat && coordinates?.lng
-                    ? `${coordinates.lat}, ${coordinates.lng}`
-                    : ""
-                }
+                value={coordinateStr}
               />
             </div>
             <div className="flex flex-1 flex-col items-start gap-1 w-full">

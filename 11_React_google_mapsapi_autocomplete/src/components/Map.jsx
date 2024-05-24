@@ -12,6 +12,7 @@ const center = {
 };
 
 function Map({ isLoaded, coordinatesArr }) {
+  console.log(coordinatesArr);
   const [map, setMap] = React.useState(null);
   const [infoWindowOpen, setInfoWindowOpen] = useState(-1);
 
@@ -24,7 +25,11 @@ function Map({ isLoaded, coordinatesArr }) {
   }, []);
 
   const handleMarkerClick = (index) => {
-    setInfoWindowOpen(index);
+    if (infoWindowOpen === index) {
+      handleInfoWindowClose();
+    } else {
+      setInfoWindowOpen(index);
+    }
   };
 
   const handleInfoWindowClose = () => {
@@ -41,25 +46,26 @@ function Map({ isLoaded, coordinatesArr }) {
     >
       {coordinatesArr?.map((coordinate, index) => (
         <Marker
+          key={index}
           position={{ lat: coordinate?.lat, lng: coordinate?.lng }}
-          onClick={handleMarkerClick}
+          onClick={() => handleMarkerClick(index)}
         >
-          <InfoWindow position={{ lat: coordinate?.lat, lng: coordinate?.lng }}>
-            {infoWindowOpen === index && (
-              <InfoWindow onCloseClick={handleInfoWindowClose}>
-                <div>
-                  <h4>{coordinate?.location}</h4>
-                  <p>Lat: {coordinate.lat}</p>
-                  <p>Lng: {coordinate.lng}</p>
-                </div>
-              </InfoWindow>
-            )}
-          </InfoWindow>
+          {infoWindowOpen === index && (
+            <InfoWindow onCloseClick={handleInfoWindowClose}>
+              <div className="max-w-[150px]">
+                <h4 className="text-clip-2">
+                  Location: {coordinate?.location}
+                </h4>
+                <p>Lat: {coordinate.lat}</p>
+                <p>Lng: {coordinate.lng}</p>
+              </div>
+            </InfoWindow>
+          )}
         </Marker>
       ))}
     </GoogleMap>
   ) : (
-    <></>
+    <>Loading...</>
   );
 }
 
