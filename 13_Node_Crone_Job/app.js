@@ -39,6 +39,8 @@ app.get("/sendEmail", async (req, res) => {
   }
 });
 
+/* ======= * * * * *  ==> minute, hour, day of the month (0-31), month (1-12), day of the week (sun -sat => 0-7) ========  */
+// This will on 10 th minute of every hour 
 cron.schedule("10 * * * *", () => {
   sendEmail({ user: GLOBAL_USER })
     .then(response => console.log(`Cron job email sent`))
