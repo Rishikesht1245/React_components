@@ -4,6 +4,7 @@ import { FaDownload } from "react-icons/fa";
 import { FaFileCsv } from "react-icons/fa";
 import { usePDF } from "react-to-pdf";
 import CsvDownloadButton from 'react-json-to-csv'
+import RandomQutoes from "./components/RandomQutoes";
 
 function App() {
   const { toPDF, targetRef } = usePDF({ filename: "invoice.pdf" });
@@ -40,6 +41,7 @@ function App() {
             Save as CSV <FaFileCsv />
           </CsvDownloadButton>
         </div>
+        <RandomQutoes/>
       </Container>
     </>
   );
