@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-label{
+  @apply font-semibold text-slate-400 tracking-[10px]
+}
+
+input{
+  @apply border-2 border-gray-100 shadow-sm w-[150px] h-[70px] placeholder:text-slate-400 text-2xl p-5 font-semibold rounded-sm focus:outline-none
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+h1{
+  @apply text-[64px] italic font-bold
+}
+
+.input-placeholder{
+  @apply text-violet-600 tracking-widest font-black
+}
