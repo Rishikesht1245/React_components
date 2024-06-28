@@ -1,0 +1,27 @@
+version: '3'
+services:
+    app:
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - 9000:9000
+      volumes:
+        - ./:/usr/src/app
+      depends_on: 
+       - redis
+    
+    redis:
+      image: redis:alpine
+      ports: 
+        - 6379:6379
+    # Redis commander is used for the GUI for dealing with redis database
+    redis-commander:
+      image: rediscommander/redis-commander:latest
+      environment:
+        - REDIS_HOSTS=local:redis:6379
+      ports:
+        - "8081:8081"
+      depends_on:
+        - redis
+  
