@@ -1,6 +1,6 @@
 const express = require("express");
 const { UserController } = require("./controllers/user");
-const { initializeRedisClient } = require("./middlewares/redis");
+const { initializeRedisClient, redisCachedMiddleware } = require("./middlewares/redis");
 
 // populate proces.env
 require("dotenv").config();
@@ -14,10 +14,10 @@ async function initializeExpressServer() {
   await initializeRedisClient();
 
   // register an endpoint
-  app.get("/api/v1/users", UserController.getAll);
+  app.get("/api/v1/users", redisCachedMiddleware(), UserController.getAll);
 
   // start the server
-  const port = 3000;
+  const port = 9000;
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });

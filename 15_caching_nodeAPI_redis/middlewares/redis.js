@@ -30,11 +30,102 @@ async function initializeRedisClient() {
   }
 }
 
+// key generation for saving in redis DB
 function requestToKey(req) {
   const requestDataToHash = {
     query: req.query,
     body: req.body,
   };
+  // `${req.path}@...` to make it easier to find
+  // keys on a Redis client
+  const key = `${req.path}@${hash.sha1(requestDataToHash)}`;
+  console.log("Redis Key : ", key)
+  return key;
 }
 
-module.exports = { initializeRedisClient };
+// function to check if redis is working or not
+function isRedisWorking(){
+  // verify whether there is an active connection
+  return !!redisClient?.isOpen;
+}
+
+
+// function to write data to redis DB
+async function writeData(key, data, options){
+  /*
+  options
+  {
+    EX, // the specified expire time in seconds
+    PX, // the specified expire time in milliseconds
+    EXAT, // the specified Unix time at which the key will expire, in seconds
+    PXAT, // the specified Unix time at which the key will expire, in milliseconds
+    NX, // write the data only if the key does not already exist
+    XX, // write the data only if the key already exists
+    KEEPTTL, // retain the TTL associated with the key
+    GET, // return the old string stored at key, or "undefined" if key did not exist
+} 
+   */
+  if(isRedisWorking()){
+    try {
+      await redisClient.set(key, data, options)
+    } catch (error) {
+      console.error(`Failed to cache data for key=${key}`, e);
+    }
+  }
+}
+
+// function to read data from redis DB
+async function readData(key){
+  let cachedValue = undefined;
+  if(isRedisWorking()){
+    cachedValue = await redisClient.get(key);
+    if(cachedValue){
+      return cachedValue
+    }
+  }
+}
+
+// middleware function : middleware with custom arguments are declared like this
+// return middlware functon
+function redisCachedMiddleware(options = {EX:216000}){
+  return async(req, res, next) => {
+    if(isRedisWorking()){
+      const key = requestToKey(req);
+
+      // checking if there is cached data or not 
+      const cachedValue = await readData(key);
+      if(cachedValue){
+        try {
+          return res.json(JSON.parse(cachedValue));
+        } catch (error) {
+          // if it's not json data
+          return res.send(cachedValue)
+        }
+      }else{
+        // here it will act as middleware so the query will execute in the next function
+        // here we can't directly save the data so we need to modify the res.send method 
+        // then inside the next function when we call the res.send function the below 
+        // function will be invoked and it will store the data in Redis DB
+        //  over ride how res.send behaves to Introduce the caching logic
+        // res.json also calls res.send under the hood so we don't need to write logic for res.jsonp
+        const oldSend = res.send;
+        res.send = function(data){
+          // to get all the data
+          res.send = oldSend;
+          // cache the response only if it is successful
+          if(res.statusCode.toString().startsWith("2")){
+            writeData(key, data, options).then();
+          }
+          return res.send(data);
+        }
+        //  continue to next controller function
+        next();
+      }
+    }else{
+      // proceed with no caching
+      next();
+    }
+  }
+}
+
+module.exports = { initializeRedisClient, redisCachedMiddleware };
