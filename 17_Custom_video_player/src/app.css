@@ -126,6 +126,11 @@
 }
 
 /* ====== CAPTIONS ====== */
-.captions-btn{
-    
+.captions-btn.active{
+    border-bottom: 2px solid red;
+}
+
+/* ====== SPEED ====== */
+.speed-btn{
+    width: 50px;
 }

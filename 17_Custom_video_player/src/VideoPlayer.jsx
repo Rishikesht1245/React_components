@@ -20,6 +20,10 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
   const [currentDuration, setCurrentDuration] = useState("0:00");
   const [totalDuration, setTotalDuration] = useState("0:00");
 
+  const [showCaptions, setShowCaptions] = useState(false);
+
+  const [playbackRate, setPlayBackRate] = useState(1);
+
   const videoContainerRef = useRef(null);
   const videoRef = useRef(null);
 
@@ -32,6 +36,7 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
     setPlaying((prevPlaying) => !prevPlaying);
   };
 
+  // request full screen, request picture in picture
   const togglePlayerMode = (event, mode) => {
     event.stopPropagation();
     if (playerMode === mode) {
@@ -88,8 +93,13 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
     setVolume(vol);
   };
 
+  // video volume === video.volume
   const handleVolumeInputChange = (event) => {
-    const value = event?.target?.value;
+    event.preventDefault();
+    event.stopPropagation();
+
+    const value = parseFloat(event.target.value);
+
     if (value >= 0.5) {
       setVolume("high");
     } else if (value > 0 && value < 0.5) {
@@ -97,7 +107,12 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
     } else {
       setVolume("mute");
     }
+
     setVolumeLevel(value);
+
+    if (videoRef.current) {
+      videoRef.current.volume = value;
+    }
   };
 
   const formatDuration = (time) => {
@@ -120,14 +135,42 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
     )}:${numberFormatter.format(seconds)}`;
   };
 
+  // skip function === video.currentTime
   const skip = (duration) => {
     videoRef.current.currentTime += duration;
   };
 
-  // for loading video
+  // toggling captions === video.textTracks[0]
+  const toggleCaption = (e) => {
+    e.stopPropagation();
+    const captions = videoRef.current?.textTracks[0];
+    if (captions) {
+      const newMode = captions?.mode === "showing" ? "hidden" : "showing";
+      captions.mode = newMode;
+      setShowCaptions((prevShowCaptions) => !prevShowCaptions);
+    }
+  };
+
+  // change playback speed === video.playbackRate
+  const changePlaybackSpeed = (e) => {
+    e.stopPropagation();
+    let newPlaybackRate = videoRef.current.playbackRate + 0.25;
+    if (newPlaybackRate > 2) {
+      newPlaybackRate = 0.25;
+    }
+    videoRef.current.playbackRate = newPlaybackRate;
+    setPlayBackRate(newPlaybackRate);
+  };
+
+  // for loading video and setting captions initially and playback rate on change video
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
+      setPlayBackRate(1);
+      const captions = videoRef.current.textTracks[0];
+      if (captions) {
+        captions.mode = showCaptions ? "showing" : "hidden";
+      }
     }
   }, [video]);
 
@@ -167,7 +210,7 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
 
     return () =>
       videoRef.current.removeEventListener("timeupdate", handleCurrentDuration);
-  });
+  }, []);
 
   // for volume controlling
   useEffect(() => {
@@ -220,6 +263,9 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
         case "arrowright":
         case "l":
           skip(5);
+        case "c":
+          toggleCaption(e);
+          break;
       }
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -271,7 +317,8 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
               max={1}
               step="any"
               value={volumeLevel}
-              onChange={(e) => handleVolumeInputChange(e)}
+              onChange={handleVolumeInputChange}
+              onClick={(e) => e.stopPropagation()}
               className="volume-slider"
             />
           </div>
@@ -285,9 +332,18 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
           </div>
 
           {/* CLOSED CAPTION BUTTON */}
-          <div className="btn captions-btn">
+          <button
+            className={`btn captions-btn ${showCaptions ? "active" : ""}`}
+            onClick={(e) => toggleCaption(e)}
+          >
             <BiCaptions />
-          </div>
+          </button>
+
+          {/* SPEED BUTTON */}
+          <button
+            className="speed-btn"
+            onClick={(e) => changePlaybackSpeed(e)}
+          >{`${playbackRate}X`}</button>
 
           <button
             className="btn mini-player-btn"
@@ -311,8 +367,7 @@ const VideoPlayer = ({ video, setActiveVidoeIndex, length }) => {
           </button>
         </div>
       </div>
-      <video width="100%" ref={videoRef}>
-        <source src={video?.url} type="video/mp4" />
+      <video width="100%" ref={videoRef} src={video?.url} type="video/mp4">
         Your browser does not support the video tag.
         <track
           kind="captions"
